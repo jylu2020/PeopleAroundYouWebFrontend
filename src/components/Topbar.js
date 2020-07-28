@@ -6,8 +6,7 @@ import '../styles/Topbar.css';
 export function Topbar(props) {
   return (
     <header className="App-header">
-      <img src={logo} className="App-logo" alt="logo" />
-      <h1 className="App-title">Around</h1>
+      <h1 className="App-title">People Around You</h1>
       {
         props.isLoggedIn ?
           <a onClick={props.handleLogout} className="logout">

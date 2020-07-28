@@ -23,7 +23,7 @@ export class Gallery extends Component {
         ...image,
         customOverlay: (
           <div style={captionStyle}>
-            <div>{`${image.user}: ${image.caption}`}</div>
+            <div>{`${image.caption}`}</div>
           </div>
         ),
       };

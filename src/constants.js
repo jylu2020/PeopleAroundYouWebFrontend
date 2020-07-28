@@ -1,4 +1,4 @@
-export const API_ROOT = 'https://around-179500.appspot.com';
+export const API_ROOT = 'http://35.232.170.8:8080';//'https://around-179500.appspot.com';
 export const TOKEN_KEY = 'TOKEN';
 export const POSITION_KEY = 'POSITION';
 export const AUTH_HEADER = 'Bearer';
@@ -12,3 +12,5 @@ export const POST_TYPE_IMAGE = 'image';
 export const POST_TYPE_VIDEO = 'video';
 export const TOPIC_AROUND = 'around';
 export const TOPIC_FACE = 'face';
+export const TOPIC_FOOD = 'food';
+export const TOPIC_EXERCISE = 'exercise';

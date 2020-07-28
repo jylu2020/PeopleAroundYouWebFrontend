@@ -2,10 +2,17 @@
 .main-tabs {
   margin-left: 100px;
   margin-right: 100px;
+  margin-top: 20px !important;
 }
 
 .video-block {
   width: 220px;
   height: 400px;
   max-width: 100%;
+}
+
+.create-post-button {
+  position: fixed;
+  left: -450px !important;
+  top: 20px;
 }

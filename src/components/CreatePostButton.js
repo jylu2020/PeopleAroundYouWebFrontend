@@ -84,7 +84,7 @@ export class CreatePostButton extends React.Component {
     const { visible, confirmLoading } = this.state;
     return (
       <div>
-        <Button type="primary" onClick={this.showModal}>
+        <Button type="primary" className="create-post-button" onClick={this.showModal}>
           Create New Post
         </Button>
         <Modal

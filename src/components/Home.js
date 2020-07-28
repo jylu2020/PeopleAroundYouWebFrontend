@@ -7,6 +7,7 @@ import {
   Radio,
 } from 'antd';
 import { CreatePostButton } from './CreatePostButton';
+import { HeartOutlined } from '@ant-design/icons';
 import { Gallery } from './Gallery';
 import { AroundMap } from './AroundMap';
 import {
@@ -19,6 +20,8 @@ import {
   POST_TYPE_VIDEO,
   TOPIC_AROUND,
   TOPIC_FACE,
+  TOPIC_FOOD,
+  TOPIC_EXERCISE
 } from '../constants';
 import '../styles/Home.css';
 
@@ -31,6 +34,7 @@ export class Home extends React.Component {
     errorMessage: null,
     posts: [],
     topic: 'around',
+    showVideo: true
   }
 
   onTopicChange = (e) => {
@@ -80,9 +84,17 @@ export class Home extends React.Component {
     range = 20,
   ) => {
     if (this.state.topic === TOPIC_AROUND) {
+      this.setState({ showVideo: true });
       this.loadNearbyPost(position, range);
     } else if (this.state.topic === TOPIC_FACE) {
+      this.setState({ showVideo: false });
       this.loadFacePost();
+    } else if (this.state.topic === TOPIC_FOOD) {
+      this.setState({ showVideo: false });
+      this.loadFoodPost();
+    } else if (this.state.topic === TOPIC_EXERCISE) {
+      this.setState({ showVideo: false });
+      this.loadExercisePost();
     }
   }
 
@@ -126,6 +138,66 @@ export class Home extends React.Component {
     });
     const token = localStorage.getItem(TOKEN_KEY);
     fetch(`${API_ROOT}/cluster?term=face`, {
+      method: 'GET',
+      headers: {
+        Authorization: `${AUTH_HEADER} ${token}`,
+      },
+    }).then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error('Failed to load posts.');
+    }).then((data) => {
+      console.log(data);
+      this.setState({
+        loadingPosts: false,
+        posts: data ? data : [],
+      });
+    }).catch((error) => {
+      this.setState({
+        loadingPosts: false,
+        errorMessage: error.message,
+      });
+    });
+  }
+
+  loadFoodPost = () => {
+    this.setState({
+      loadingPosts: true,
+      errorMessage: null,
+    });
+    const token = localStorage.getItem(TOKEN_KEY);
+    fetch(`${API_ROOT}/cluster?term=food`, {
+      method: 'GET',
+      headers: {
+        Authorization: `${AUTH_HEADER} ${token}`,
+      },
+    }).then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error('Failed to load posts.');
+    }).then((data) => {
+      console.log(data);
+      this.setState({
+        loadingPosts: false,
+        posts: data ? data : [],
+      });
+    }).catch((error) => {
+      this.setState({
+        loadingPosts: false,
+        errorMessage: error.message,
+      });
+    });
+  }
+
+  loadExercisePost = () => {
+    this.setState({
+      loadingPosts: true,
+      errorMessage: null,
+    });
+    const token = localStorage.getItem(TOKEN_KEY);
+    fetch(`${API_ROOT}/cluster?term=exercise`, {
       method: 'GET',
       headers: {
         Authorization: `${AUTH_HEADER} ${token}`,
@@ -206,21 +278,36 @@ export class Home extends React.Component {
   }
 
   render() {
-    const operations = <CreatePostButton onSuccess={this.loadPost} />;
+    // const operations = <CreatePostButton onSuccess={this.loadPost} />;
     return (
       <div>
+        <CreatePostButton onSuccess={this.loadPost}/>
         <Radio.Group onChange={this.onTopicChange} value={this.state.topic} className="topic-radio-group">
           <Radio value={TOPIC_AROUND}>Posts Around Me</Radio>
-          <Radio value={TOPIC_FACE}>Faces Around The World</Radio>
+          <Radio value={TOPIC_FACE}>People</Radio>
+          <Radio value={TOPIC_FOOD}>Food</Radio>
+          <Radio value={TOPIC_EXERCISE}>Exercise</Radio>
         </Radio.Group>
-        <Tabs tabBarExtraContent={operations} className="main-tabs">
-          <TabPane tab="Image Posts" key="1">
+        {/* <Tabs tabBarExtraContent={operations} tabPosition="left" className="main-tabs"> */}
+        <Tabs tabPosition="left" className="main-tabs">
+          <TabPane 
+           tab={
+            <span>
+              <HeartOutlined />
+              Image Posts
+            </span>
+           }
+           key="1">
             {this.getPosts(POST_TYPE_IMAGE)}
           </TabPane>
-          <TabPane tab="Video Posts" key="2">
-            {this.getPosts(POST_TYPE_VIDEO)}
-          </TabPane>
-          <TabPane tab="Map" key="3">
+          <TabPane 
+           tab={
+            <span>
+              <HeartOutlined />
+              Map View
+            </span>
+           } 
+           key="2">
             <AroundMap
               googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyD3CEh9DXuyjozqptVB5LA-dN7MxWWkr9s&v=3.exp&libraries=geometry,drawing,places"
               loadingElement={<div style={{ height: `100%` }} />}
@@ -230,6 +317,20 @@ export class Home extends React.Component {
               onChange={this.loadPost}
             />
           </TabPane>
+          {this.state.showVideo ? 
+            <TabPane 
+            tab={
+              <span>
+                <HeartOutlined />
+                Video Posts
+              </span>
+             }
+             key="3">
+              {this.getPosts(POST_TYPE_VIDEO)}
+            </TabPane>
+            :
+            <></>
+          }
         </Tabs>
       </div>
     );

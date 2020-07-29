@@ -1,7 +1,7 @@
 import React, { Component }from 'react';
 import PropTypes from 'prop-types';
 import GridGallery from 'react-grid-gallery';
-import _objectSpread2 from '@babel/runtime/helpers/esm/objectSpread2';
+// import _objectSpread2 from '@babel/runtime/helpers/esm/objectSpread2';
 
 export class Gallery extends Component {
   static propTypes = {

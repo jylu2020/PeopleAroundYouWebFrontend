@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Input, Upload, Icon } from 'antd';
 
-const FormItem = Form.Item;
+// const FormItem = Form.Item;
 
 class NormalCreatePostForm extends React.Component {
   normFile = (e) => {
